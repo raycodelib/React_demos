@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 
 export default class Main extends Component {
-    static propTypes = {
-        searchKeyword: PropTypes.string.isRequired,
-    };
+    // static propTypes = {
+    //     searchKeyword: PropTypes.string.isRequired,
+    // };
 
     state = {
         initView: true,
@@ -14,37 +15,40 @@ export default class Main extends Component {
         errorMsg: null,
     };
 
-    componentWillReceiveProps(newProps) {
-        const { searchKeyword } = newProps;
-        this.setState({
-            initView: false,
-            loading: true,
-        });
-        const url = `https://api.github.com/search/users?q=${searchKeyword}`;
-        axios
-            .get(url)
-            .then((response) => {
-                const result = response.data;
-                // console.log(result);
-                // const users = result.items.map((items) => {
-                //     return {
-                //         name: item.login,
-                //         url: item.html_url,
-                //         avatarUrl: item.avatar_url,
-                //     };
-                // });
-                const users = result.items.map((item) => ({
-                    name: item.login,
-                    url: item.html_url,
-                    avatarUrl: item.avatar_url,
-                }));
-
-                this.setState({ loading: false, users });
-            })
-            .catch((error) => {
-                this.setState({ loading: false, errorMsg: error.message });
+    componentDidMount() {
+        // subscribe
+        PubSub.subscribe('SEARCH', (msg, searchKeyword) => {
+            // the bellowing 'this' is not pointing to the component state
+            // use arrow function whenever we define callback function
+            this.setState({
+                initView: false,
+                loading: true,
             });
+
+            // send Ajax request
+            const url = `https://api.github.com/search/users?q=${searchKeyword}`;
+            axios
+                .get(url)
+                .then((response) => {
+                    const result = response.data;
+                    const users = result.items.map((item) => ({
+                        name: item.login,
+                        url: item.html_url,
+                        avatarUrl: item.avatar_url,
+                    }));
+
+                    this.setState({ loading: false, users });
+                })
+                .catch((error) => {
+                    this.setState({ loading: false, errorMsg: error.message });
+                });
+        });
     }
+
+    // componentWillReceiveProps(newProps) {
+    //     const { searchKeyword } = newProps;
+    //     code move to componentDidMount
+    // }
 
     render() {
         const { initView, loading, users, errorMsg } = this.state;
@@ -63,6 +67,7 @@ export default class Main extends Component {
                                 <img
                                     src={user.avatarUrl}
                                     style={{ width: 100 }}
+                                    alt=''
                                 />
                             </a>
                             <p className='card-text'>{user.name}</p>

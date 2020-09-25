@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
-import PubSub from 'pubsub-js';
+import PropTypes from 'prop-types';
 
 export default class Search extends Component {
-    // static propTypes = {
-    //     setSearchKeyword: PropTypes.func.isRequired,
-    // };
+    static propTypes = {
+        setSearchKeyword: PropTypes.func.isRequired,
+    };
 
     handleClick = () => {
         const searchKeyword = this.input.value.trim();
         if (searchKeyword) {
-            // this.props.setSearchKeyword(searchKeyword);
-            PubSub.publish('SEARCH', searchKeyword);
+            this.props.setSearchKeyword(searchKeyword);
         }
     };
 

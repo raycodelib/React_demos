@@ -4,20 +4,22 @@ import Search from './search';
 import Main from './main';
 
 export default class App extends Component {
-    state = {
-        searchKeyword: '',
-    };
+    // state = {
+    //     searchKeyword: '',
+    // };
 
-    setSearchKeyword = (searchKeyword) => {
-        this.setState({ searchKeyword });
-    };
+    // setSearchKeyword = (searchKeyword) => {
+    //     this.setState({ searchKeyword });
+    // };
 
     render() {
         return (
             <div className='container'>
-                <Search setSearchKeyword={this.setSearchKeyword} />
-                <Main searchKeyword={this.state.searchKeyword} />
+                <Search />
+                <Main />
             </div>
         );
     }
+    // <Search setSearchKeyword={this.setSearchKeyword} />
+    // <Main searchKeyword={this.state.searchKeyword} />
 }
