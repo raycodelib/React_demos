@@ -7,11 +7,11 @@ import './comment-list.css';
 export default class CommentList extends Component {
     static propTypes = {
         comments: PropTypes.array.isRequired,
-        // deleteComment: PropTypes.func.isRequired,
+        deleteComment: PropTypes.func.isRequired,
     };
 
     render() {
-        const { comments } = this.props;
+        const { comments, deleteComment } = this.props;
         const display = comments.length === 0 ? 'block' : 'none';
         return (
             <div className='col-md-8'>
@@ -24,7 +24,7 @@ export default class CommentList extends Component {
                         <CommentItem
                             comment={comment}
                             key={index}
-                            // deleteComment={deleteComment}
+                            deleteComment={deleteComment}
                             index={index}
                         />
                     ))}
