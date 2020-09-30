@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-// import {increment, decrement} from '../redux/actions'
-import * as actions from '../redux/actions';
-
-export default class App extends Component {
-    // state = {
-    //     count: 0,
-    // };
+export default class Counter extends Component {
+    static propTyeps = {
+        count: PropTypes.number.isRequired,
+        increment: PropTypes.func.isRequired,
+        decrement: PropTypes.func.isRequired,
+    };
 
     increment = () => {
         //1. read value in option
@@ -16,23 +16,23 @@ export default class App extends Component {
         //3. update state
         // this.setState({ count: count + select });
         // this.props.store.dispatch({ type: INCREMENT, data: select });
-        this.props.store.dispatch(actions.increment(select));
+        this.props.increment(select);
     };
 
     decrement = () => {
         //1. read value in option
         const select = this.select.value * 1;
-        this.props.store.dispatch(actions.decrement(select));
+        this.props.decrement(select);
     };
 
     incrementIfOdd = () => {
         //1. read value in option
         const select = this.select.value * 1;
         //2. read count value and calculate new value
-        const count = this.props.store.getState();
+        const { count } = this.props;
         //3. update state
         if (count % 2 === 1) {
-            this.props.store.dispatch(actions.increment(select));
+            this.props.increment(select);
         }
     };
 
@@ -41,12 +41,12 @@ export default class App extends Component {
         const select = this.select.value * 1;
         //3. update state
         setTimeout(() => {
-            this.props.store.dispatch(actions.increment(select));
+            this.props.increment(select);
         }, 1000);
     };
 
     render() {
-        const count = this.props.store.getState();
+        const { count } = this.props;
 
         return (
             <div>
