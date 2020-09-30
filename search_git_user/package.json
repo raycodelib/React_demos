@@ -1,5 +1,5 @@
 {
-  "name": "search-git-user",
+  "name": "search_git_user",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
